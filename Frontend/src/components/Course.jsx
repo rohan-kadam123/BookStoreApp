@@ -1,9 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import list from '../data/list.json'
 import course1 from '../../public/course1.avif'
 import {Link} from 'react-router-dom'
+import axios from "axios"
 
 function Course() {
+   const [book, setbook] = useState([])
+   useEffect(()=>{
+      const getBook=async()=>{
+         try{
+       const res = await axios.get("http://localhost:4001/book");
+       console.log(res.data);
+       setbook(res.data)
+
+    } catch(error){
+
+       console.log(error);
+       
+    }
+      };
+   getBook();
+   },[])
+
   // Sorting: free category first
   const sortedData = [...list].sort((a, b) => {
     if (a.category === 'free' && b.category !== 'free') return -1;
@@ -15,7 +33,7 @@ function Course() {
     <>
       <div className='max-w-screen-2xl container mx-auto md:px-20 px-4  dark:bg-gray-900 dark:text-white'>
         {/* Header */}
-        <div className='mt-28 text-center'>
+        <div className='mt-16 py-12 text-center '>
           <h1 className='text-2xl font-semibold md:text-4xl'>
             We're delighted to have you{" "}
             <span className='text-pink-400'>Here! :)</span>
